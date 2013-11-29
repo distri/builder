@@ -1,7 +1,5 @@
 
 
 Move adding dependencies to a post processor.
-Move adding version to a post processor.
-Move adding remote dependencies to post processor.
 
 Pipes instead of deferred for post processors.

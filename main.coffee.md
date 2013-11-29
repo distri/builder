@@ -4,25 +4,10 @@ Builder
 The builder knows how to compile a source tree or individual files into various
 build products.
 
-This should be extracted to a separate library eventually.
-
-Dependencies
-------------
-
-This guy helps package our app and manage dependencies.
-
-    Packager = require "packager"
+TODO: Should the builder be part of the packager?
 
 Helpers
 -------
-
-    readSourceConfig = (pkg=PACKAGE) ->
-      if configData = pkg.source["pixie.cson"]?.content
-        CSON.parse(configData)
-      else if configData = pkg.source["pixie.json"]?.content
-        JSON.parse(configData)
-      else
-        {}
 
     arrayToHash = (array) ->
       array.reduce (hash, file) ->
@@ -117,12 +102,7 @@ Builder
 
 The builder instance.
 
-TODO: Extract this whole duder to a separate component.
-
-TODO: Standardize interface to use promises.
-
-TODO: Allow configuration of builder instances, adding additional compilers,
-postprocessors, etc.
+TODO: Standardize interface to use promises or pipes.
 
     Builder = ->
       build = (fileData) ->
@@ -174,28 +154,15 @@ include source files, compiled files, and documentation.
             content: item.code
             type: "blob"
 
-          # TODO: We should be able to put a lot of this into postProcessors
-
           source = arrayToHash(fileData)
 
-          config = readSourceConfig(source: source)
+          pkg =
+            source: source
+            distribution: arrayToHash(results)
 
-          # TODO: Robustify bundled dependencies
-          # Right now we're always loading them from remote urls during the
-          # build step. The default http caching is probably fine to speed this
-          # up, but we may want to look into keeping our own cache during dev
-          # in addition to using the package's existing dependencies rather
-          # than always updating
-          dependencies = config.dependencies or {}
+          postProcessors.forEach (fn) ->
+            fn(pkg)
 
-          Packager.collectDependencies(dependencies, cache)
-          .then (bundledDependencies) ->
-            postProcessors.pipeline
-              version: config.version
-              source: source
-              distribution: arrayToHash(results)
-              entryPoint: config.entryPoint or "main"
-              dependencies: bundledDependencies
-              remoteDependencies: config.remoteDependencies
+          return pkg
 
     module.exports = Builder
