@@ -1,5 +1,5 @@
 window["distri/builder:v0.2.0-pre.1"]({
-  "version": "0.2.0-pre.1",
+  "version": "0.2.0",
   "source": {
     "LICENSE": {
       "path": "LICENSE",
@@ -28,7 +28,7 @@ window["distri/builder:v0.2.0-pre.1"]({
     "pixie.cson": {
       "path": "pixie.cson",
       "mode": "100644",
-      "content": "version: \"0.2.0-pre.1\"\nentryPoint: \"main\"\n",
+      "content": "version: \"0.2.0\"\nentryPoint: \"main\"\n",
       "type": "blob"
     },
     "test/builder.coffee": {
@@ -46,7 +46,7 @@ window["distri/builder:v0.2.0-pre.1"]({
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.2.0-pre.1\",\"entryPoint\":\"main\"};",
+      "content": "module.exports = {\"version\":\"0.2.0\",\"entryPoint\":\"main\"};",
       "type": "blob"
     },
     "test/builder": {
