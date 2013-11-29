@@ -1,0 +1,4 @@
+version: "0.1.0"
+entryPoint: "main"
+dependencies:
+  packager: "STRd6/packager:v0.4.1"
