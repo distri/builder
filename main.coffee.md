@@ -17,6 +17,22 @@ Helpers
         hash
       , {}
 
+    extend = (target, sources...) ->
+      for source in sources
+        for name of source
+          target[name] = source[name]
+
+      return target
+
+    fileExtension = (str) ->
+      if match = str.match(/\.([^\.]*)$/, '')
+        match[match.length - 1]
+      else
+        ''
+
+    withoutExtension = (str) ->
+      str.replace(/\.[^\.]*$/,"")
+
 `stripMarkdown` converts a literate file into pure code for compilation or execution.
 
     stripMarkdown = (content) ->
@@ -66,7 +82,7 @@ and properties for what type of content was built.
 TODO: Allow for files to generate docs and code at the same time.
 
     compileFile = ({path, content}) ->
-      [name, extension] = [path.withoutExtension(), path.extension()]
+      [name, extension] = [withoutExtension(path), fileExtension(path)]
 
       result =
         switch extension
@@ -92,11 +108,10 @@ TODO: Allow for files to generate docs and code at the same time.
           else
             {}
 
-      Object.defaults result,
-        name: name
-        extension: extension
+      result.name ?= name
+      result.extension ?= extension
 
-      Object.extend result,
+      extend result,
         path: path
 
 Builder
