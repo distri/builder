@@ -9,6 +9,8 @@ TODO: Should the builder be part of the packager?
 Helpers
 -------
 
+    Deferred = $.Deferred
+
     arrayToHash = (array) ->
       array.reduce (hash, file) ->
         hash[file.path] = file
@@ -119,7 +121,8 @@ TODO: Standardize interface to use promises or pipes.
 
             error: "#{path} - #{message}"
 
-        [errors, data] = results.partition (result) -> result.error
+        errors = results.filter (result) -> result.error
+        data = results.filter (result) -> !result.error
 
         if errors.length
           Deferred().reject(errors.map (e) -> e.error)
