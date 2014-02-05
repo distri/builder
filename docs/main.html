@@ -51,7 +51,9 @@ build products.</p>
               </div>
               
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">Deferred = $.Deferred
+            <div class="content"><pre><code class="lang-coffeescript">CSON = require <span class="string">"./cson"</span>
+
+Deferred = $.Deferred
 
 <span class="function"><span class="title">arrayToHash</span></span> = (array) -&gt;
   array.reduce (hash, file) -&gt;
@@ -289,18 +291,14 @@ include source files, compiled files, and documentation.</p>
             <div class="content"><pre><code class="lang-coffeescript">  build: (fileData, cache={}) -&gt;
     build(fileData)
     .<span class="keyword">then</span> (items) -&gt;
-      results = []
 
-      items.eachWithObject results, (item, hash) -&gt;
-        <span class="keyword">if</span> item.code
-          results.push item
-        <span class="keyword">else</span>
-          <span class="comment"># Do nothing, we don't know about this item</span>
-
-      results = results.map (item) -&gt;
-        path: item.name
-        content: item.code
-        type: <span class="string">"blob"</span>
+      results = 
+        items.filter (item) -&gt;
+          item.code
+        .map (item) -&gt;
+          path: item.name
+          content: item.code
+          type: <span class="string">"blob"</span>
 
       source = arrayToHash(fileData)
 
@@ -322,7 +320,8 @@ module.exports = Builder</code></pre>
   <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script>
 <script src="http://strd6.github.io/require/v0.2.2.js"></script>
-<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script><script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script><script>
   $.ajax({
     url: "http://strd6.github.io/interactive/v0.8.1.jsonp",
     dataType: "jsonp",
