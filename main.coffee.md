@@ -8,7 +8,7 @@ TODO: Should the builder be part of the packager?
 
 Helpers
 -------
-    CSON = require "./cson"
+    CSON = require "cson"
 
     Deferred = $.Deferred
 
@@ -161,7 +161,7 @@ include source files, compiled files, and documentation.
         build(fileData)
         .then (items) ->
 
-          results = 
+          results =
             items.filter (item) ->
               item.code
             .map (item) ->
