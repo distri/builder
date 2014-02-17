@@ -51,7 +51,7 @@ build products.</p>
               </div>
               
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">CSON = require <span class="string">"./cson"</span>
+            <div class="content"><pre><code class="lang-coffeescript">CSON = require <span class="string">"cson"</span>
 
 Deferred = $.Deferred
 
@@ -292,7 +292,7 @@ include source files, compiled files, and documentation.</p>
     build(fileData)
     .<span class="keyword">then</span> (items) -&gt;
 
-      results = 
+      results =
         items.filter (item) -&gt;
           item.code
         .map (item) -&gt;
