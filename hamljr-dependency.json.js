@@ -15,7 +15,7 @@ window["distri/builder:hamljr-dependency"]({
     "TODO": {
       "path": "TODO",
       "mode": "100644",
-      "content": "\n\nMove adding dependencies to a post processor.\n\nPipes instead of deferred for post processors.\n",
+      "content": "TODO\n====\n\nRemove jQuery dependency.\n\nMove adding dependencies to a post processor.\n\nPipes instead of deferred for post processors.\n",
       "type": "blob"
     },
     "main.coffee.md": {
