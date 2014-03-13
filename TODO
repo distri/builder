@@ -1,4 +1,7 @@
+TODO
+====
 
+Remove jQuery dependency.
 
 Move adding dependencies to a post processor.
 
