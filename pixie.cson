@@ -1,4 +1,4 @@
-version: "0.3.2"
+version: "0.3.3"
 entryPoint: "main"
 remoteDependencies: [
   "https://code.jquery.com/jquery-1.10.1.min.js"
@@ -6,3 +6,4 @@ remoteDependencies: [
 ]
 dependencies:
   cson: "distri/cson:v0.1.0"
+  "haml-jr": "distri/haml-jr:v0.1.2"
