@@ -9,6 +9,7 @@ TODO: Should the builder be part of the packager?
 Helpers
 -------
     CSON = require "cson"
+    HamlJr = require "haml-jr"
 
     Deferred = $.Deferred
 
@@ -44,11 +45,13 @@ Helpers
           ""
       .join("\n")
 
-`compileTemplate` compiles a haml file into a HAMLjr program.
+`compileTemplate` compiles a haml file into a HamlJr program.
 
     compileTemplate = (source) ->
       """
-        module.exports = Function("return " + HAMLjr.compile(#{JSON.stringify(source)}, {compiler: CoffeeScript}))()
+        Runtime = require("/_lib/hamljr_runtime");
+
+        module.exports = #{HamlJr.compile(source, {compiler: CoffeeScript})}
       """
 
 `stringData` exports a string of text. When you require a file that exports
@@ -126,8 +129,6 @@ TODO: Standardize interface to use promises or pipes.
       build = (fileData) ->
         results = fileData.map ({path, content}) ->
           try
-            # TODO: Separate out tests
-
             compileFile
               path: path
               content: content
@@ -143,6 +144,15 @@ TODO: Standardize interface to use promises or pipes.
         if errors.length
           Deferred().reject(errors.map (e) -> e.error)
         else
+          # Add the HamlJr runtime if any templates were compiled
+          hasHaml = fileData.some ({path}) ->
+            path.match /.*\.haml(\..*)?$/
+
+          if hasHaml
+            data.push
+              name: "_lib/hamljr_runtime"
+              code: PACKAGE.dependencies["haml-jr"].distribution.runtime.content # Kinda gross
+
           Deferred().resolve(data)
 
 Post processors operate on the built package.

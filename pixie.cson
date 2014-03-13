@@ -6,3 +6,4 @@ remoteDependencies: [
 ]
 dependencies:
   cson: "distri/cson:v0.1.0"
+  "haml-jr": "distri/haml-jr:v0.1.2"
