@@ -4,8 +4,6 @@ Builder
 The builder knows how to compile a source tree or individual files into various
 build products.
 
-TODO: Should the builder be part of the packager?
-
 Helpers
 -------
     CSON = require "cson"
@@ -82,8 +80,6 @@ modules.
 
 `compileFile` take a fileData and returns a buildData. A buildData has a `path`,
 and properties for what type of content was built.
-
-TODO: Allow for files to generate docs and code at the same time.
 
     compileFile = ({path, content}) ->
       [name, extension] = [withoutExtension(path), fileExtension(path)]

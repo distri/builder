@@ -16,7 +16,7 @@ describe "Builder", ->
     builder.build(fileData).then (result) ->
       console.log result
     , (errors) ->
-      console.log errors
+      throw errors[0]
 
   it "should build haml", (done) ->
     builder = Builder()
@@ -30,4 +30,3 @@ describe "Builder", ->
       done()
     , (errors) ->
       throw errors[0]
-      console.log errors
