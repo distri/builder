@@ -30,7 +30,7 @@
     "pixie.cson": {
       "path": "pixie.cson",
       "mode": "100644",
-      "content": "version: \"0.3.2\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://code.jquery.com/jquery-1.10.1.min.js\"\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  \"haml-jr\": \"distri/haml-jr:v0.1.2\"\n",
+      "content": "version: \"0.3.3-alpha.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://code.jquery.com/jquery-1.10.1.min.js\"\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  \"haml-jr\": \"distri/haml-jr:v0.1.2\"\n",
       "type": "blob"
     },
     "test/builder.coffee": {
@@ -54,7 +54,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.3.2\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://code.jquery.com/jquery-1.10.1.min.js\",\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"haml-jr\":\"distri/haml-jr:v0.1.2\"}};",
+      "content": "module.exports = {\"version\":\"0.3.3-alpha.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://code.jquery.com/jquery-1.10.1.min.js\",\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"haml-jr\":\"distri/haml-jr:v0.1.2\"}};",
       "type": "blob"
     },
     "test/builder": {
@@ -71,7 +71,7 @@
   "progenitor": {
     "url": "http://strd6.github.io/editor/"
   },
-  "version": "0.3.2",
+  "version": "0.3.3-alpha.0",
   "entryPoint": "main",
   "remoteDependencies": [
     "https://code.jquery.com/jquery-1.10.1.min.js",
