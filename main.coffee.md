@@ -67,16 +67,11 @@ export.
 
       stringData(styleContent)
 
-`compileCoffee` compiles a coffee file into JS and adds the sourceURL comment.
-
-TODO: Work with the require component to make the sourceURL unique for files in
-modules.
+`compileCoffee` compiles a coffee file into JS. The `require` library handles
+appending a sourceURL comment to assist in debugging.
 
     compileCoffee = (source, path) ->
-      """
-        #{CoffeeScript.compile(source)}
-        //# sourceURL=#{path}
-      """
+      CoffeeScript.compile(source)
 
 `compileFile` take a fileData and returns a buildData. A buildData has a `path`,
 and properties for what type of content was built.
