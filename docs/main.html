@@ -155,16 +155,12 @@ export.</p>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p><code>compileCoffee</code> compiles a coffee file into JS and adds the sourceURL comment.</p>
-<p>TODO: Work with the require component to make the sourceURL unique for files in
-modules.</p>
+              <p><code>compileCoffee</code> compiles a coffee file into JS. The <code>require</code> library handles
+appending a sourceURL comment to assist in debugging.</p>
 
             </div>
             <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileCoffee</span></span> = (source, path) -&gt;
-  <span class="string">"""
-    <span class="subst">#{CoffeeScript.compile(source)}</span>
-    //# sourceURL=<span class="subst">#{path}</span>
-  """</span></code></pre>
+  CoffeeScript.compile(source)</code></pre>
 </div>
         </li>
         
@@ -447,23 +443,19 @@ module.exports = Builder</code></pre>
     }, 0);
   };
 
-  Interactive.register("setup", function(params) {
-    params.code = CoffeeScript.compile(params.source);
-    return exec(params);
-  });
-
-  Interactive.register("setup-js", function(params) {
-    params.code = params.source;
-    return exec(params);
-  });
-
   $(function() {
-    return findInteractiveElements();
+    Interactive.register("setup", function(params) {
+      params.code = CoffeeScript.compile(params.source);
+      return exec(params);
+    });
+    return Interactive.register("setup-js", function(params) {
+      params.code = params.source;
+      return exec(params);
+    });
   });
 
 }).call(this);
 
-//# sourceURL=interactive.coffee
 </script><script src="package.js"></script>
 </body>
 </html>
