@@ -235,11 +235,11 @@ and properties for what type of content was built.</p>
             </div>
             <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">Builder</span></span> = -&gt;
   <span class="function"><span class="title">build</span></span> = (fileData) -&gt;
-    results = fileData.map ({path, content}) -&gt;
+    results = fileData.map (datum) -&gt;
+      {path} = datum
+
       <span class="keyword">try</span>
-        compileFile
-          path: path
-          content: content
+        (cached compileFile) datum
       <span class="keyword">catch</span> {location, message}
         <span class="keyword">if</span> location?
           message = <span class="string">"Error on line <span class="subst">#{location.first_line + <span class="number">1</span>}</span>: <span class="subst">#{message}</span>"</span>
@@ -316,6 +316,41 @@ include source files, compiled files, and documentation.</p>
       <span class="keyword">return</span> pkg
 
 module.exports = Builder</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2 id="cache">Cache</h2>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">compilerCache = {}
+
+<span class="function"><span class="title">cached</span></span> = (compileFn) -&gt;
+  (data) -&gt;
+    {path, sha, content} = data
+    <span class="keyword">if</span> sha
+      key = <span class="string">"<span class="subst">#{path}</span>:<span class="subst">#{sha}</span>"</span>
+      compilerCache[key] <span class="keyword">or</span> compilerCache[key] = compileFn(data)
+    <span class="keyword">else</span>
+      compileFn(data)</code></pre>
 </div>
         </li>
         
