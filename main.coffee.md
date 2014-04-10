@@ -118,11 +118,11 @@ TODO: Standardize interface to use promises or pipes.
 
     Builder = ->
       build = (fileData) ->
-        results = fileData.map ({path, content}) ->
+        results = fileData.map (datum) ->
+          {path} = datum
+
           try
-            compileFile
-              path: path
-              content: content
+            (cached compileFile) datum
           catch {location, message}
             if location?
               message = "Error on line #{location.first_line + 1}: #{message}"
@@ -182,3 +182,17 @@ include source files, compiled files, and documentation.
           return pkg
 
     module.exports = Builder
+
+Cache
+-----
+
+    compilerCache = {}
+
+    cached = (compileFn) ->
+      (data) ->
+        {path, sha, content} = data
+        if sha
+          key = "#{path}:#{sha}"
+          compilerCache[key] or compilerCache[key] = compileFn(data)
+        else
+          compileFn(data)
