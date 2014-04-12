@@ -304,7 +304,7 @@ include source files, compiled files, and documentation.</p>
           content: item.code
           type: <span class="string">"blob"</span>
 
-      source = arrayToHash(fileData)
+      source = arrayToHash(fileData.map cleanSourceFile)
 
       pkg =
         source: source
@@ -351,6 +351,33 @@ module.exports = Builder</code></pre>
       compilerCache[key] <span class="keyword">or</span> compilerCache[key] = compileFn(data)
     <span class="keyword">else</span>
       compileFn(data)</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h2 id="helpers">Helpers</h2>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">cleanSourceFile</span></span> = ({path, content, mode, type}) -&gt;
+  {path, content, mode, type}</code></pre>
 </div>
         </li>
         
