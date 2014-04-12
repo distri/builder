@@ -170,7 +170,7 @@ include source files, compiled files, and documentation.
               content: item.code
               type: "blob"
 
-          source = arrayToHash(fileData)
+          source = arrayToHash(fileData.map cleanSourceFile)
 
           pkg =
             source: source
@@ -196,3 +196,9 @@ Cache
           compilerCache[key] or compilerCache[key] = compileFn(data)
         else
           compileFn(data)
+
+Helpers
+-------
+
+    cleanSourceFile = ({path, content, mode, type}) ->
+      {path, content, mode, type}
