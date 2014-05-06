@@ -25,7 +25,7 @@ describe "Builder", ->
       PACKAGE.source[path]
 
     builder.build(fileData).then (result) ->
-      assert result.distribution["_lib/hamljr_runtime"].content
+      assert result.distribution["lib/_hamljr_runtime"].content
       assert result.distribution["samples/haml"].content
       done()
     , (errors) ->
