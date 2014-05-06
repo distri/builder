@@ -9,6 +9,8 @@ Helpers
     CSON = require "cson"
     HamlJr = require "haml-jr"
 
+    hamlJrPath = "lib/_hamljr_runtime"
+
     Deferred = $.Deferred
 
     arrayToHash = (array) ->
@@ -47,7 +49,7 @@ Helpers
 
     compileTemplate = (source) ->
       """
-        Runtime = require("/_lib/hamljr_runtime");
+        Runtime = require("/#{hamlJrPath}");
 
         module.exports = #{HamlJr.compile(source, {compiler: CoffeeScript})}
       """
@@ -140,9 +142,13 @@ TODO: Standardize interface to use promises or pipes.
             path.match /.*\.haml(\..*)?$/
 
           if hasHaml
-            data.push
-              name: "_lib/hamljr_runtime"
-              code: PACKAGE.dependencies["haml-jr"].distribution.runtime.content # Kinda gross
+            libExists = data.some ({name}) ->
+              name is hamlJrPath
+
+            unless libExists
+              data.push
+                name: hamlJrPath
+                code: PACKAGE.dependencies["haml-jr"].distribution.runtime.content # Kinda gross
 
           Deferred().resolve(data)
 
