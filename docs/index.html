@@ -53,6 +53,8 @@ build products.</p>
             <div class="content"><pre><code class="lang-coffeescript">CSON = require <span class="string">"cson"</span>
 HamlJr = require <span class="string">"haml-jr"</span>
 
+hamlJrPath = <span class="string">"lib/_hamljr_runtime"</span>
+
 Deferred = $.Deferred
 
 <span class="function"><span class="title">arrayToHash</span></span> = (array) -&gt;
@@ -109,7 +111,7 @@ Deferred = $.Deferred
             </div>
             <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileTemplate</span></span> = (source) -&gt;
   <span class="string">"""
-    Runtime = require("/_lib/hamljr_runtime");
+    Runtime = require("/<span class="subst">#{hamlJrPath}</span>");
 
     module.exports = <span class="subst">#{HamlJr.compile(source, {compiler: CoffeeScript}</span>)}
   """</span></code></pre>
@@ -257,9 +259,13 @@ and properties for what type of content was built.</p>
         path.match <span class="regexp">/.*\.haml(\..*)?$/</span>
 
       <span class="keyword">if</span> hasHaml
-        data.push
-          name: <span class="string">"_lib/hamljr_runtime"</span>
-          code: PACKAGE.dependencies[<span class="string">"haml-jr"</span>].distribution.runtime.content <span class="comment"># Kinda gross</span>
+        libExists = data.some ({name}) -&gt;
+          name <span class="keyword">is</span> hamlJrPath
+
+        <span class="keyword">unless</span> libExists
+          data.push
+            name: hamlJrPath
+            code: PACKAGE.dependencies[<span class="string">"haml-jr"</span>].distribution.runtime.content <span class="comment"># Kinda gross</span>
 
       Deferred().resolve(data)</code></pre>
 </div>
