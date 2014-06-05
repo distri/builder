@@ -4,36 +4,12 @@ Builder
 The builder knows how to compile a source tree or individual files into various
 build products.
 
-Helpers
--------
     CSON = require "cson"
-    HamlJr = require "haml-jr"
+    HamletCompiler = require "./lib/hamlet-compiler"
 
-    hamlJrPath = "lib/_hamljr_runtime"
+    hamletRuntimePath = "lib/hamlet-runtime"
 
     Deferred = $.Deferred
-
-    arrayToHash = (array) ->
-      array.reduce (hash, file) ->
-        hash[file.path] = file
-        hash
-      , {}
-
-    extend = (target, sources...) ->
-      for source in sources
-        for name of source
-          target[name] = source[name]
-
-      return target
-
-    fileExtension = (str) ->
-      if match = str.match(/\.([^\.]*)$/, '')
-        match[match.length - 1]
-      else
-        ''
-
-    withoutExtension = (str) ->
-      str.replace(/\.[^\.]*$/,"")
 
 `stripMarkdown` converts a literate file into pure code for compilation or execution.
 
@@ -45,13 +21,15 @@ Helpers
           ""
       .join("\n")
 
-`compileTemplate` compiles a haml file into a HamlJr program.
+`compileTemplate` compiles a haml file into a Hamlet program.
 
     compileTemplate = (source) ->
-      """
-        Runtime = require("/#{hamlJrPath}");
+      code = HamletCompiler.compile source,
+        compiler: CoffeeScript
+        runtime: "require(\"/#{hamletRuntimePath}\")"
 
-        module.exports = #{HamlJr.compile(source, {compiler: CoffeeScript})}
+      """
+        module.exports = #{code}
       """
 
 `stringData` exports a string of text. When you require a file that exports
@@ -143,12 +121,12 @@ TODO: Standardize interface to use promises or pipes.
 
           if hasHaml
             libExists = data.some ({name}) ->
-              name is hamlJrPath
+              name is hamletRuntimePath
 
             unless libExists
               data.push
-                name: hamlJrPath
-                code: PACKAGE.dependencies["haml-jr"].distribution.runtime.content # Kinda gross
+                name: hamletRuntimePath
+                code: PACKAGE.distribution["lib/hamlet-runtime"].content # Kinda gross
 
           Deferred().resolve(data)
 
@@ -208,3 +186,25 @@ Helpers
 
     cleanSourceFile = ({path, content, mode, type}) ->
       {path, content, mode, type}
+
+    arrayToHash = (array) ->
+      array.reduce (hash, file) ->
+        hash[file.path] = file
+        hash
+      , {}
+
+    extend = (target, sources...) ->
+      for source in sources
+        for name of source
+          target[name] = source[name]
+
+      return target
+
+    fileExtension = (str) ->
+      if match = str.match(/\.([^\.]*)$/, '')
+        match[match.length - 1]
+      else
+        ''
+
+    withoutExtension = (str) ->
+      str.replace(/\.[^\.]*$/,"")

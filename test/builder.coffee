@@ -25,8 +25,14 @@ describe "Builder", ->
       PACKAGE.source[path]
 
     builder.build(fileData).then (result) ->
-      assert result.distribution["lib/_hamljr_runtime"].content
+      assert result.distribution["lib/hamlet-runtime"].content
       assert result.distribution["samples/haml"].content
       done()
     , (errors) ->
       throw errors[0]
+
+  it "should have the Hamlet runtime", ->
+    assert require "/lib/hamlet-runtime"
+
+  it "should have the Hamlet compiler", ->
+    assert require "/lib/hamlet-runtime"
