@@ -1,10 +1,11 @@
 CACHE MANIFEST
-# 1401929013340
+# 1405383222886
 
 CACHE:
 index.html
+master.json.js
 https://code.jquery.com/jquery-1.11.0.min.js
-https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js
+https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js
 
 NETWORK:
 https://*
