@@ -6,3 +6,4 @@ remoteDependencies: [
 ]
 dependencies:
   cson: "distri/cson:v0.1.0"
+  styl: "distri/styl:v0.2.8-pre.0"

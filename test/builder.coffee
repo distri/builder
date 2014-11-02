@@ -7,26 +7,29 @@ describe "Builder", ->
   it "should exist", ->
     assert Builder
 
-  it "should build", ->
-    builder = Builder()
-
-    fileData = Object.keys(PACKAGE.source).map (path) ->
-      PACKAGE.source[path]
-
-    builder.build(fileData).then (result) ->
-      console.log result
-    , (errors) ->
-      throw errors[0]
-
   it "should build haml", (done) ->
     builder = Builder()
 
-    fileData = Object.keys(PACKAGE.source).map (path) ->
-      PACKAGE.source[path]
+    fileData = [
+      PACKAGE.source["samples/haml.haml"]
+    ]
 
     builder.build(fileData).then (result) ->
       assert result.distribution["lib/hamlet-runtime"].content
       assert result.distribution["samples/haml"].content
+      done()
+    , (errors) ->
+      throw errors[0]
+
+  it "should build styl", (done) ->
+    builder = Builder()
+
+    fileData = [
+      PACKAGE.source["samples/styl.styl"]
+    ]
+
+    builder.build(fileData).then (result) ->
+      assert result.distribution["samples/styl"].content
       done()
     , (errors) ->
       throw errors[0]

@@ -9,6 +9,8 @@ build products.
 
     hamletRuntimePath = "lib/hamlet-runtime"
 
+    styl = require "styl"
+
     Deferred = $.Deferred
 
 `stripMarkdown` converts a literate file into pure code for compilation or execution.
