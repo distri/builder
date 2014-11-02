@@ -1,4 +1,4 @@
-version: "0.4.1"
+version: "0.4.2"
 entryPoint: "main"
 remoteDependencies: [
   "https://code.jquery.com/jquery-1.11.0.min.js"
@@ -6,4 +6,4 @@ remoteDependencies: [
 ]
 dependencies:
   cson: "distri/cson:v0.1.0"
-  styl: "distri/styl:v0.2.8"
+  styl: "distri/styl:v0.2.8.1"
