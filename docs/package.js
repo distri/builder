@@ -204,7 +204,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.4.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://code.jquery.com/jquery-1.11.0.min.js\"\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8-pre.0\"\n",
+      "content": "version: \"0.4.1\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://code.jquery.com/jquery-1.11.0.min.js\"\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -214,16 +214,17 @@
       "mode": "100644",
       "type": "blob"
     },
+    "samples/styl.styl": {
+      "path": "samples/styl.styl",
+      "content": "body\n  color: green\n",
+      "mode": "100644",
+      "type": "blob"
+    },
     "test/builder.coffee": {
       "path": "test/builder.coffee",
       "content": "global.require = require\nglobal.PACKAGE = PACKAGE\n\nBuilder = require \"../main\"\n\ndescribe \"Builder\", ->\n  it \"should exist\", ->\n    assert Builder\n\n  it \"should build haml\", (done) ->\n    builder = Builder()\n\n    fileData = [\n      PACKAGE.source[\"samples/haml.haml\"]\n    ]\n\n    builder.build(fileData).then (result) ->\n      assert result.distribution[\"lib/hamlet-runtime\"].content\n      assert result.distribution[\"samples/haml\"].content\n      done()\n    , (errors) ->\n      throw errors[0]\n\n  it \"should build styl\", (done) ->\n    builder = Builder()\n\n    fileData = [\n      PACKAGE.source[\"samples/styl.styl\"]\n    ]\n\n    builder.build(fileData).then (result) ->\n      assert result.distribution[\"samples/styl\"].content\n      done()\n    , (errors) ->\n      throw errors[0]\n\n  it \"should have the Hamlet runtime\", ->\n    assert require \"/lib/hamlet-runtime\"\n\n  it \"should have the Hamlet compiler\", ->\n    assert require \"/lib/hamlet-runtime\"\n",
       "mode": "100644",
       "type": "blob"
-    },
-    "samples/styl.styl": {
-      "path": "samples/styl.styl",
-      "content": "body\n  color: green\n",
-      "mode": "100644"
     }
   },
   "distribution": {
@@ -244,7 +245,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.4.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://code.jquery.com/jquery-1.11.0.min.js\",\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8-pre.0\"}};",
+      "content": "module.exports = {\"version\":\"0.4.1\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://code.jquery.com/jquery-1.11.0.min.js\",\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8\"}};",
       "type": "blob"
     },
     "samples/haml": {
@@ -252,21 +253,21 @@
       "content": "module.exports = (function(data) {\n  return (function() {\n    var __runtime;\n    __runtime = require(\"/lib/hamlet-runtime\")(this);\n    __runtime.push(document.createDocumentFragment());\n    __runtime.push(document.createElement(\"h1\"));\n    __runtime.text(\"Super cool sample\\n\");\n    __runtime.pop();\n    __runtime.text(\"yo/lo\");\n    return __runtime.pop();\n  }).call(data);\n});\n",
       "type": "blob"
     },
-    "test/builder": {
-      "path": "test/builder",
-      "content": "(function() {\n  var Builder;\n\n  global.require = require;\n\n  global.PACKAGE = PACKAGE;\n\n  Builder = require(\"../main\");\n\n  describe(\"Builder\", function() {\n    it(\"should exist\", function() {\n      return assert(Builder);\n    });\n    it(\"should build haml\", function(done) {\n      var builder, fileData;\n      builder = Builder();\n      fileData = [PACKAGE.source[\"samples/haml.haml\"]];\n      return builder.build(fileData).then(function(result) {\n        assert(result.distribution[\"lib/hamlet-runtime\"].content);\n        assert(result.distribution[\"samples/haml\"].content);\n        return done();\n      }, function(errors) {\n        throw errors[0];\n      });\n    });\n    it(\"should build styl\", function(done) {\n      var builder, fileData;\n      builder = Builder();\n      fileData = [PACKAGE.source[\"samples/styl.styl\"]];\n      return builder.build(fileData).then(function(result) {\n        assert(result.distribution[\"samples/styl\"].content);\n        return done();\n      }, function(errors) {\n        throw errors[0];\n      });\n    });\n    it(\"should have the Hamlet runtime\", function() {\n      return assert(require(\"/lib/hamlet-runtime\"));\n    });\n    return it(\"should have the Hamlet compiler\", function() {\n      return assert(require(\"/lib/hamlet-runtime\"));\n    });\n  });\n\n}).call(this);\n",
-      "type": "blob"
-    },
     "samples/styl": {
       "path": "samples/styl",
       "content": "module.exports = \"body {\\n  color: green;\\n}\";",
+      "type": "blob"
+    },
+    "test/builder": {
+      "path": "test/builder",
+      "content": "(function() {\n  var Builder;\n\n  global.require = require;\n\n  global.PACKAGE = PACKAGE;\n\n  Builder = require(\"../main\");\n\n  describe(\"Builder\", function() {\n    it(\"should exist\", function() {\n      return assert(Builder);\n    });\n    it(\"should build haml\", function(done) {\n      var builder, fileData;\n      builder = Builder();\n      fileData = [PACKAGE.source[\"samples/haml.haml\"]];\n      return builder.build(fileData).then(function(result) {\n        assert(result.distribution[\"lib/hamlet-runtime\"].content);\n        assert(result.distribution[\"samples/haml\"].content);\n        return done();\n      }, function(errors) {\n        throw errors[0];\n      });\n    });\n    it(\"should build styl\", function(done) {\n      var builder, fileData;\n      builder = Builder();\n      fileData = [PACKAGE.source[\"samples/styl.styl\"]];\n      return builder.build(fileData).then(function(result) {\n        assert(result.distribution[\"samples/styl\"].content);\n        return done();\n      }, function(errors) {\n        throw errors[0];\n      });\n    });\n    it(\"should have the Hamlet runtime\", function() {\n      return assert(require(\"/lib/hamlet-runtime\"));\n    });\n    return it(\"should have the Hamlet compiler\", function() {\n      return assert(require(\"/lib/hamlet-runtime\"));\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     }
   },
   "progenitor": {
     "url": "http://www.danielx.net/editor/"
   },
-  "version": "0.4.0",
+  "version": "0.4.1",
   "entryPoint": "main",
   "remoteDependencies": [
     "https://code.jquery.com/jquery-1.11.0.min.js",
@@ -473,7 +474,7 @@
         },
         "pixie.cson": {
           "path": "pixie.cson",
-          "content": "entryPoint: \"lib/styl\"\nversion: \"0.2.8-pre.0\"\n",
+          "content": "entryPoint: \"lib/styl\"\nversion: \"0.2.8\"\n",
           "mode": "100644"
         },
         "test/test.coffee": {
@@ -490,7 +491,7 @@
         },
         "pixie": {
           "path": "pixie",
-          "content": "module.exports = {\"entryPoint\":\"lib/styl\",\"version\":\"0.2.8-pre.0\"};",
+          "content": "module.exports = {\"entryPoint\":\"lib/styl\",\"version\":\"0.2.8\"};",
           "type": "blob"
         },
         "test/test": {
@@ -502,10 +503,10 @@
       "progenitor": {
         "url": "http://www.danielx.net/editor/"
       },
-      "version": "0.2.8-pre.0",
+      "version": "0.2.8",
       "entryPoint": "lib/styl",
       "repository": {
-        "branch": "v0.2.8-pre.0",
+        "branch": "v0.2.8",
         "default_branch": "master",
         "full_name": "distri/styl",
         "homepage": null,
