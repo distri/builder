@@ -38,7 +38,7 @@ window["distri/builder:removed-jquery"]({
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.4.2\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8.1\"\n  q: \"distri/q:v1.0.1\"\n",
+      "content": "version: \"0.4.3\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8.1\"\n  q: \"distri/q:v1.0.1\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -79,7 +79,7 @@ window["distri/builder:removed-jquery"]({
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.4.2\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8.1\",\"q\":\"distri/q:v1.0.1\"}};",
+      "content": "module.exports = {\"version\":\"0.4.3\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8.1\",\"q\":\"distri/q:v1.0.1\"}};",
       "type": "blob"
     },
     "samples/haml": {
@@ -101,7 +101,7 @@ window["distri/builder:removed-jquery"]({
   "progenitor": {
     "url": "http://www.danielx.net/editor/"
   },
-  "version": "0.4.2",
+  "version": "0.4.3",
   "entryPoint": "main",
   "remoteDependencies": [
     "https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"
