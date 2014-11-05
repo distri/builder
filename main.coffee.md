@@ -7,11 +7,11 @@ build products.
     CSON = require "cson"
     HamletCompiler = require "./lib/hamlet-compiler"
 
+    Q = require "q"
+
     hamletRuntimePath = "lib/hamlet-runtime"
 
     styl = require "styl"
-
-    Deferred = $.Deferred
 
 `stripMarkdown` converts a literate file into pure code for compilation or execution.
 
@@ -115,7 +115,8 @@ TODO: Standardize interface to use promises or pipes.
         data = results.filter (result) -> !result.error
 
         if errors.length
-          Deferred().reject(errors.map (e) -> e.error)
+          Q.fcall ->
+            throw (errors.map (e) -> e.error).join("\n")
         else
           # Add the HamlJr runtime if any templates were compiled
           hasHaml = fileData.some ({path}) ->
@@ -130,7 +131,7 @@ TODO: Standardize interface to use promises or pipes.
                 name: hamletRuntimePath
                 code: PACKAGE.distribution["lib/hamlet-runtime"].content # Kinda gross
 
-          Deferred().resolve(data)
+          Q.fcall -> data
 
 Post processors operate on the built package.
 

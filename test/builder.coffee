@@ -20,6 +20,7 @@ describe "Builder", ->
       done()
     , (errors) ->
       throw errors[0]
+    .done()
 
   it "should build styl", (done) ->
     builder = Builder()
@@ -33,6 +34,7 @@ describe "Builder", ->
       done()
     , (errors) ->
       throw errors[0]
+    .done()
 
   it "should have the Hamlet runtime", ->
     assert require "/lib/hamlet-runtime"
