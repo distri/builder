@@ -1,9 +1,9 @@
-version: "0.4.2"
+version: "0.4.3"
 entryPoint: "main"
 remoteDependencies: [
-  "https://code.jquery.com/jquery-1.11.0.min.js"
   "https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"
 ]
 dependencies:
   cson: "distri/cson:v0.1.0"
   styl: "distri/styl:v0.2.8.1"
+  q: "distri/q:v1.0.1"
