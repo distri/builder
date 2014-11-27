@@ -16,7 +16,8 @@ describe "Builder", ->
 
     builder.build(fileData).then (result) ->
       assert result.distribution["lib/hamlet-runtime"].content
-      assert result.distribution["samples/haml"].content
+      assert result.distribution["samples/haml"].content.match(/module\.exports =/)
+
       done()
     , (errors) ->
       throw errors[0]
