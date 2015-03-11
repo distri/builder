@@ -1,12 +1,6 @@
-global.require = require
-global.PACKAGE = PACKAGE
-
 Builder = require "../main"
 
 describe "Builder", ->
-  it "should exist", ->
-    assert Builder
-
   it "should build haml", (done) ->
     builder = Builder()
 
@@ -28,7 +22,7 @@ describe "Builder", ->
     fileData = [
       PACKAGE.source["samples/styl.styl"]
     ]
-
+    
     builder.build(fileData).then (result) ->
       assert result.distribution["samples/styl"].content
       done()
@@ -36,8 +30,29 @@ describe "Builder", ->
       throw errors[0]
     .done()
 
-  it "should have the Hamlet runtime", ->
-    assert require "/lib/hamlet-runtime"
+  it "should build HTML", (done) ->
+    fileData = [{
+      path: "template.html"
+      content: """
+        <div class="main">
+          <h1>Test</h1>
+          <div class="component"></div>
+        </div>
+      """
+    }]
 
-  it "should have the Hamlet compiler", ->
-    assert require "/lib/hamlet-runtime"
+    builder = Builder()
+
+    builder.build(fileData).then (result) ->
+      content = result.distribution["template"].content
+      m = {}
+      Function("module", "return " + content)(m)
+      template =  m.exports
+
+      node = template()
+      assert node.childElementCount is 2
+      assert node.className is "main"
+      done()
+    , (errors) ->
+      throw errors[0]
+    .done()

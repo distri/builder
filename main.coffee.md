@@ -34,6 +34,17 @@ build products.
         module.exports = #{code}
       """
 
+`compileHTML` compiles an HTML file into a function that returns a DOM node.
+
+    compileHTML = (htmlString) ->
+      compileCoffee """
+        module.exports = ->
+          wrapper = document.createElement "div"
+          wrapper.innerHTML = #{JSON.stringify(htmlString)}
+
+          return wrapper.children[0]
+      """
+
 `stringData` exports a string of text. When you require a file that exports
 string data it returns the string for you to use in your code. This is handy for
 CSS or other textually based data.
@@ -77,6 +88,8 @@ and properties for what type of content was built.
             code: compileStyl(content)
           when "css"
             code: stringData(content)
+          when "html"
+            code: compileHTML(content)
           when "md"
             # Separate out code and call compile again
             compileFile
