@@ -22,7 +22,7 @@ describe "Builder", ->
     fileData = [
       PACKAGE.source["samples/styl.styl"]
     ]
-    
+
     builder.build(fileData).then (result) ->
       assert result.distribution["samples/styl"].content
       done()
