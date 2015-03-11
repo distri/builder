@@ -204,7 +204,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.5.0-pre.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8.1\"\n  q: \"distri/q:v1.0.1\"\n",
+      "content": "version: \"0.4.3\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8.1\"\n  q: \"distri/q:v1.0.1\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -222,7 +222,7 @@
     },
     "test/builder.coffee": {
       "path": "test/builder.coffee",
-      "content": "Builder = require \"../main\"\n\ndescribe \"Builder\", ->\n  it \"should build haml\", (done) ->\n    builder = Builder()\n\n    fileData = [\n      PACKAGE.source[\"samples/haml.haml\"]\n    ]\n\n    builder.build(fileData).then (result) ->\n      assert result.distribution[\"lib/hamlet-runtime\"].content\n      assert result.distribution[\"samples/haml\"].content\n      done()\n    , (errors) ->\n      throw errors[0]\n    .done()\n\n  it \"should build styl\", (done) ->\n    builder = Builder()\n\n    fileData = [\n      PACKAGE.source[\"samples/styl.styl\"]\n    ]\n    \n    builder.build(fileData).then (result) ->\n      assert result.distribution[\"samples/styl\"].content\n      done()\n    , (errors) ->\n      throw errors[0]\n    .done()\n\n  it \"should build HTML\", (done) ->\n    fileData = [{\n      path: \"template.html\"\n      content: \"\"\"\n        <div class=\"main\">\n          <h1>Test</h1>\n          <div class=\"component\"></div>\n        </div>\n      \"\"\"\n    }]\n\n    builder = Builder()\n\n    builder.build(fileData).then (result) ->\n      content = result.distribution[\"template\"].content\n      m = {}\n      Function(\"module\", \"return \" + content)(m)\n      template =  m.exports\n\n      node = template()\n      assert node.childElementCount is 2\n      assert node.className is \"main\"\n      done()\n    , (errors) ->\n      throw errors[0]\n    .done()\n",
+      "content": "Builder = require \"../main\"\n\ndescribe \"Builder\", ->\n  it \"should build haml\", (done) ->\n    builder = Builder()\n\n    fileData = [\n      PACKAGE.source[\"samples/haml.haml\"]\n    ]\n\n    builder.build(fileData).then (result) ->\n      assert result.distribution[\"lib/hamlet-runtime\"].content\n      assert result.distribution[\"samples/haml\"].content\n      done()\n    , (errors) ->\n      throw errors[0]\n    .done()\n\n  it \"should build styl\", (done) ->\n    builder = Builder()\n\n    fileData = [\n      PACKAGE.source[\"samples/styl.styl\"]\n    ]\n\n    builder.build(fileData).then (result) ->\n      assert result.distribution[\"samples/styl\"].content\n      done()\n    , (errors) ->\n      throw errors[0]\n    .done()\n\n  it \"should build HTML\", (done) ->\n    fileData = [{\n      path: \"template.html\"\n      content: \"\"\"\n        <div class=\"main\">\n          <h1>Test</h1>\n          <div class=\"component\"></div>\n        </div>\n      \"\"\"\n    }]\n\n    builder = Builder()\n\n    builder.build(fileData).then (result) ->\n      content = result.distribution[\"template\"].content\n      m = {}\n      Function(\"module\", \"return \" + content)(m)\n      template =  m.exports\n\n      node = template()\n      assert node.childElementCount is 2\n      assert node.className is \"main\"\n      done()\n    , (errors) ->\n      throw errors[0]\n    .done()\n",
       "mode": "100644",
       "type": "blob"
     }
@@ -245,7 +245,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.5.0-pre.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8.1\",\"q\":\"distri/q:v1.0.1\"}};",
+      "content": "module.exports = {\"version\":\"0.4.3\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8.1\",\"q\":\"distri/q:v1.0.1\"}};",
       "type": "blob"
     },
     "samples/haml": {
@@ -267,7 +267,7 @@
   "progenitor": {
     "url": "http://www.danielx.net/editor/"
   },
-  "version": "0.5.0-pre.0",
+  "version": "0.4.3",
   "entryPoint": "main",
   "remoteDependencies": [
     "https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"
