@@ -26,13 +26,9 @@ build products.
 `compileTemplate` compiles a haml file into a Hamlet program.
 
     compileTemplate = (source) ->
-      code = HamletCompiler.compile source,
+      HamletCompiler.compile source,
         compiler: CoffeeScript
         runtime: "require(\"/#{hamletRuntimePath}\")"
-
-      """
-        module.exports = #{code}
-      """
 
 `compileHTML` compiles an HTML file into a function that returns a DOM node.
 
