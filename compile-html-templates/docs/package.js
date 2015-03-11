@@ -204,7 +204,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.4.3\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8.1\"\n  q: \"distri/q:v1.0.1\"\n",
+      "content": "version: \"0.4.4-pre.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n  styl: \"distri/styl:v0.2.8.1\"\n  q: \"distri/q:v1.0.1\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -245,7 +245,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.4.3\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8.1\",\"q\":\"distri/q:v1.0.1\"}};",
+      "content": "module.exports = {\"version\":\"0.4.4-pre.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\",\"styl\":\"distri/styl:v0.2.8.1\",\"q\":\"distri/q:v1.0.1\"}};",
       "type": "blob"
     },
     "samples/haml": {
@@ -267,7 +267,7 @@
   "progenitor": {
     "url": "http://hyperweb.space/?repo=distri/builder"
   },
-  "version": "0.4.3",
+  "version": "0.4.4-pre.0",
   "entryPoint": "main",
   "remoteDependencies": [
     "https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"
