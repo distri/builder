@@ -26,13 +26,9 @@ build products.
 `compileTemplate` compiles a haml file into a Hamlet program.
 
     compileTemplate = (source) ->
-      code = HamletCompiler.compile source,
+      HamletCompiler.compile source,
         compiler: CoffeeScript
         runtime: "require(\"/#{hamletRuntimePath}\")"
-
-      """
-        module.exports = #{code}
-      """
 
 `stringData` exports a string of text. When you require a file that exports
 string data it returns the string for you to use in your code. This is handy for
