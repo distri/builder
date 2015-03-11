@@ -39,11 +39,11 @@ build products.</p>
             <div class="content"><pre><code class="lang-coffeescript">CSON = require <span class="string">"cson"</span>
 HamletCompiler = require <span class="string">"./lib/hamlet-compiler"</span>
 
+Q = require <span class="string">"q"</span>
+
 hamletRuntimePath = <span class="string">"lib/hamlet-runtime"</span>
 
-styl = require <span class="string">"styl"</span>
-
-Deferred = $.Deferred</code></pre>
+styl = require <span class="string">"styl"</span></code></pre>
 </div>
         </li>
         
@@ -76,13 +76,9 @@ Deferred = $.Deferred</code></pre>
 
             </div>
             <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileTemplate</span></span> = (source) -&gt;
-  code = HamletCompiler.compile source,
+  HamletCompiler.compile source,
     compiler: CoffeeScript
-    runtime: <span class="string">"require(\"/<span class="subst">#{hamletRuntimePath}</span>\")"</span>
-
-  <span class="string">"""
-    module.exports = <span class="subst">#{code}</span>
-  """</span></code></pre>
+    runtime: <span class="string">"require(\"/<span class="subst">#{hamletRuntimePath}</span>\")"</span></code></pre>
 </div>
         </li>
         
@@ -91,6 +87,26 @@ Deferred = $.Deferred</code></pre>
             <div class="annotation">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><code>compileHTML</code> compiles an HTML file into a function that returns a DOM node.</p>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileHTML</span></span> = (htmlString) -&gt;
+  compileCoffee <span class="string">"""
+    module.exports = -&gt;
+      wrapper = document.createElement "div"
+      wrapper.innerHTML = <span class="subst">#{JSON.stringify(htmlString)}</span>
+
+      return wrapper.children[0]
+  """</span></code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p><code>stringData</code> exports a string of text. When you require a file that exports
 string data it returns the string for you to use in your code. This is handy for
@@ -103,10 +119,10 @@ CSS or other textually based data.</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p><code>compileStyl</code> compiles a styl file into CSS and makes it available as a string
 export.</p>
@@ -120,10 +136,10 @@ export.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p><code>compileCoffee</code> compiles a coffee file into JS. The <code>require</code> library handles
 appending a sourceURL comment to assist in debugging.</p>
@@ -135,10 +151,10 @@ appending a sourceURL comment to assist in debugging.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p><code>compileFile</code> take a fileData and returns a buildData. A buildData has a <code>path</code>,
 and properties for what type of content was built.</p>
@@ -163,6 +179,8 @@ and properties for what type of content was built.</p>
         code: compileStyl(content)
       <span class="keyword">when</span> <span class="string">"css"</span>
         code: stringData(content)
+      <span class="keyword">when</span> <span class="string">"html"</span>
+        code: compileHTML(content)
       <span class="keyword">when</span> <span class="string">"md"</span>
         <span class="comment"># Separate out code and call compile again</span>
         compileFile
@@ -180,10 +198,10 @@ and properties for what type of content was built.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <h2 id="builder">Builder</h2>
 
@@ -194,10 +212,10 @@ and properties for what type of content was built.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>The builder instance.</p>
 <p>TODO: Standardize interface to use promises or pipes.</p>
@@ -220,7 +238,8 @@ and properties for what type of content was built.</p>
     data = results.filter (result) -&gt; !result.error
 
     <span class="keyword">if</span> errors.length
-      Deferred().reject(errors.map (e) -&gt; e.error)
+      Q.fcall -&gt;
+        <span class="keyword">throw</span> (errors.map (e) -&gt; e.error).join(<span class="string">"\n"</span>)
     <span class="keyword">else</span>
       <span class="comment"># Add the HamlJr runtime if any templates were compiled</span>
       hasHaml = fileData.some ({path}) -&gt;
@@ -235,15 +254,15 @@ and properties for what type of content was built.</p>
             name: hamletRuntimePath
             code: PACKAGE.distribution[<span class="string">"lib/hamlet-runtime"</span>].content <span class="comment"># Kinda gross</span>
 
-      Deferred().resolve(data)</code></pre>
+      Q.fcall -&gt; data</code></pre>
 </div>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Post processors operate on the built package.</p>
 <p>TODO: Maybe we should split post processors into the packager.</p>
@@ -257,10 +276,10 @@ and properties for what type of content was built.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Compile and build a tree of file data into a distribution. The distribution should
 include source files, compiled files, and documentation.</p>
@@ -294,10 +313,10 @@ module.exports = Builder</code></pre>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <h2 id="cache">Cache</h2>
 
@@ -308,10 +327,10 @@ module.exports = Builder</code></pre>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               
             </div>
@@ -329,10 +348,10 @@ module.exports = Builder</code></pre>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <h2 id="helpers">Helpers</h2>
 
@@ -343,10 +362,10 @@ module.exports = Builder</code></pre>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               
             </div>
@@ -381,7 +400,6 @@ module.exports = Builder</code></pre>
   </div>
   <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script><script>
   (function() {
   var ErrorReporter, bindUpdates, createEditor, exec, findInteractiveElements, readShebang, runners;
