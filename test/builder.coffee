@@ -76,3 +76,6 @@ describe "Builder", ->
     , (errors) ->
       throw errors[0]
     .done()
+
+  it "should provide a working Hamlet runtime", ->
+    assert typeof require("/lib/hamlet-runtime") is 'function'
