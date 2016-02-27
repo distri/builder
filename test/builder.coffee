@@ -1,6 +1,25 @@
-Builder = require "../main"
+global.Builder = require "../main"
+global.require = require
 
 describe "Builder", ->
+  it "should build jadelet", (done) ->
+    builder = Builder()
+
+    fileData = [
+      PACKAGE.source["samples/jadelet.jadelet"]
+    ]
+
+    builder.build(fileData).then (result) ->
+      console.log result
+
+      assert result.distribution["lib/hamlet-runtime"].content
+      assert result.distribution["samples/jadelet"].content.match(/module\.exports =/)
+
+      done()
+    .fail (e) ->
+      throw e
+    .done()
+
   it "should build haml", (done) ->
     builder = Builder()
 
@@ -51,3 +70,6 @@ describe "Builder", ->
       assert node.className is "main"
       done()
     .catch done
+
+  it "should provide a working Hamlet runtime", ->
+    assert typeof require("/lib/hamlet-runtime") is 'function'
