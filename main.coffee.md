@@ -7,8 +7,6 @@ build products.
     CSON = require "cson"
     HamletCompiler = require "./lib/hamlet-compiler"
 
-    Q = require "q"
-
     hamletRuntimePath = "lib/hamlet-runtime"
 
     styl = require "styl"
@@ -124,8 +122,7 @@ TODO: Standardize interface to use promises or pipes.
         data = results.filter (result) -> !result.error
 
         if errors.length
-          Q.fcall ->
-            throw (errors.map (e) -> e.error).join("\n")
+          Promise.reject (errors.map (e) -> e.error).join("\n")
         else
           # Add the HamlJr runtime if any templates were compiled
           hasHaml = fileData.some ({path}) ->
@@ -140,7 +137,7 @@ TODO: Standardize interface to use promises or pipes.
                 name: hamletRuntimePath
                 code: PACKAGE.distribution["lib/hamlet-runtime"].content # Kinda gross
 
-          Q.fcall -> data
+          Promise.resolve data
 
 Post processors operate on the built package.
 

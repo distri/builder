@@ -13,9 +13,7 @@ describe "Builder", ->
       assert result.distribution["samples/haml"].content.match(/module\.exports =/)
 
       done()
-    , (errors) ->
-      throw errors[0]
-    .done()
+    .catch done
 
   it "should build styl", (done) ->
     builder = Builder()
@@ -27,9 +25,7 @@ describe "Builder", ->
     builder.build(fileData).then (result) ->
       assert result.distribution["samples/styl"].content
       done()
-    , (errors) ->
-      throw errors[0]
-    .done()
+    .catch done
 
   it "should build HTML", (done) ->
     fileData = [{
@@ -54,6 +50,4 @@ describe "Builder", ->
       assert node.childElementCount is 2
       assert node.className is "main"
       done()
-    , (errors) ->
-      throw errors[0]
-    .done()
+    .catch done
