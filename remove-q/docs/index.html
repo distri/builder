@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>index</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="https://strd6.github.io/cdn/parallel/docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    <ul class="sections">
+      <li id="section-1">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-1">&#182;</a>
+    </div>
+    <h1 id="builder">Builder</h1>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+</li>
+<li id="section-2">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-2">&#182;</a>
+    </div>
+    <p>The builder knows how to compile a source tree or individual files into various
+build products.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">CSON = require <span class="string">"cson"</span>
+HamletCompiler = require <span class="string">"./lib/hamlet-compiler"</span>
+
+hamletRuntimePath = <span class="string">"lib/hamlet-runtime"</span>
+
+styl = require <span class="string">"styl"</span></code></pre>
+</div>
+</li>
+<li id="section-3">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-3">&#182;</a>
+    </div>
+    <p><code>stripMarkdown</code> converts a literate file into pure code for compilation or execution.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">stripMarkdown</span></span> = (content) -&gt;
+  content.split(<span class="string">"\n"</span>).map (line) -&gt;
+    <span class="keyword">if</span> match = (<span class="regexp">/^([ ]{4}|\t)/</span>).exec line
+      line[match[<span class="number">0</span>].length..]
+    <span class="keyword">else</span>
+      <span class="string">""</span>
+  .join(<span class="string">"\n"</span>)</code></pre>
+</div>
+</li>
+<li id="section-4">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-4">&#182;</a>
+    </div>
+    <p><code>compileTemplate</code> compiles a haml file into a Hamlet program.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileTemplate</span></span> = (source) -&gt;
+  HamletCompiler.compile source,
+    compiler: CoffeeScript
+    runtime: <span class="string">"require(\"/<span class="subst">#{hamletRuntimePath}</span>\")"</span></code></pre>
+</div>
+</li>
+<li id="section-5">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-5">&#182;</a>
+    </div>
+    <p><code>compileHTML</code> compiles an HTML file into a function that returns a DOM node.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileHTML</span></span> = (htmlString) -&gt;
+  compileCoffee <span class="string">"""
+    module.exports = -&gt;
+      wrapper = document.createElement "div"
+      wrapper.innerHTML = <span class="subst">#{JSON.stringify(htmlString)}</span>
+
+      return wrapper.children[0]
+  """</span></code></pre>
+</div>
+</li>
+<li id="section-6">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-6">&#182;</a>
+    </div>
+    <p><code>stringData</code> exports a string of text. When you require a file that exports
+string data it returns the string for you to use in your code. This is handy for
+CSS or other textually based data.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">stringData</span></span> = (source) -&gt;
+  <span class="string">"module.exports = <span class="subst">#{JSON.stringify(source)}</span>;"</span></code></pre>
+</div>
+</li>
+<li id="section-7">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-7">&#182;</a>
+    </div>
+    <p><code>compileStyl</code> compiles a styl file into CSS and makes it available as a string
+export.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileStyl</span></span> = (source) -&gt;
+  styleContent = styl(source, whitespace: <span class="literal">true</span>).toString()
+
+  stringData(styleContent)</code></pre>
+</div>
+</li>
+<li id="section-8">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-8">&#182;</a>
+    </div>
+    <p><code>compileCoffee</code> compiles a coffee file into JS. The <code>require</code> library handles
+appending a sourceURL comment to assist in debugging.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileCoffee</span></span> = (source, path) -&gt;
+  CoffeeScript.compile(source)</code></pre>
+</div>
+</li>
+<li id="section-9">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-9">&#182;</a>
+    </div>
+    <p><code>compileFile</code> take a fileData and returns a buildData. A buildData has a <code>path</code>,
+and properties for what type of content was built.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileFile</span></span> = ({path, content}) -&gt;
+  [name, extension] = [withoutExtension(path), fileExtension(path)]
+
+  result =
+    <span class="keyword">switch</span> extension
+      <span class="keyword">when</span> <span class="string">"js"</span>
+        code: content
+      <span class="keyword">when</span> <span class="string">"json"</span>
+        code: stringData(JSON.parse(content))
+      <span class="keyword">when</span> <span class="string">"cson"</span>
+        code: stringData(CSON.parse(content))
+      <span class="keyword">when</span> <span class="string">"coffee"</span>
+        code: compileCoffee(content, path)
+      <span class="keyword">when</span> <span class="string">"haml"</span>
+        code: compileTemplate(content, name)
+      <span class="keyword">when</span> <span class="string">"styl"</span>
+        code: compileStyl(content)
+      <span class="keyword">when</span> <span class="string">"css"</span>
+        code: stringData(content)
+      <span class="keyword">when</span> <span class="string">"html"</span>
+        code: compileHTML(content)
+      <span class="keyword">when</span> <span class="string">"md"</span>
+        <span class="comment"># Separate out code and call compile again</span>
+        compileFile
+          path: name
+          content: stripMarkdown(content)
+      <span class="keyword">else</span>
+        {}
+
+  result.name ?= name
+  result.extension ?= extension
+
+  extend result,
+    path: path</code></pre>
+</div>
+</li>
+<li id="section-10">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-10">&#182;</a>
+    </div>
+    <h2 id="builder">Builder</h2>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+</li>
+<li id="section-11">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-11">&#182;</a>
+    </div>
+    <p>The builder instance.</p>
+<p>TODO: Standardize interface to use promises or pipes.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">Builder</span></span> = -&gt;
+  <span class="function"><span class="title">build</span></span> = (fileData) -&gt;
+    results = fileData.map (datum) -&gt;
+      {path} = datum
+
+      <span class="keyword">try</span>
+        (cached compileFile) datum
+      <span class="keyword">catch</span> {location, message}
+        <span class="keyword">if</span> location?
+          message = <span class="string">"Error on line <span class="subst">#{location.first_line + <span class="number">1</span>}</span>: <span class="subst">#{message}</span>"</span>
+
+        error: <span class="string">"<span class="subst">#{path}</span> - <span class="subst">#{message}</span>"</span>
+
+    errors = results.filter (result) -&gt; result.error
+    data = results.filter (result) -&gt; !result.error
+
+    <span class="keyword">if</span> errors.length
+      Promise.reject (errors.map (e) -&gt; e.error).join(<span class="string">"\n"</span>)
+    <span class="keyword">else</span>
+      <span class="comment"># Add the HamlJr runtime if any templates were compiled</span>
+      hasHaml = fileData.some ({path}) -&gt;
+        path.match <span class="regexp">/.*\.haml(\..*)?$/</span>
+
+      <span class="keyword">if</span> hasHaml
+        libExists = data.some ({name}) -&gt;
+          name <span class="keyword">is</span> hamletRuntimePath
+
+        <span class="keyword">unless</span> libExists
+          data.push
+            name: hamletRuntimePath
+            code: PACKAGE.distribution[<span class="string">"lib/hamlet-runtime"</span>].content <span class="comment"># Kinda gross</span>
+
+      Promise.resolve data</code></pre>
+</div>
+</li>
+<li id="section-12">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-12">&#182;</a>
+    </div>
+    <p>Post processors operate on the built package.</p>
+<p>TODO: Maybe we should split post processors into the packager.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">  postProcessors = []
+
+  addPostProcessor: (fn) -&gt;
+    postProcessors.push fn</code></pre>
+</div>
+</li>
+<li id="section-13">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-13">&#182;</a>
+    </div>
+    <p>Compile and build a tree of file data into a distribution. The distribution should
+include source files, compiled files, and documentation.</p>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">  build: (fileData, cache={}) -&gt;
+    build(fileData)
+    .<span class="keyword">then</span> (items) -&gt;
+
+      results =
+        items.filter (item) -&gt;
+          item.code
+        .map (item) -&gt;
+          path: item.name
+          content: item.code
+          type: <span class="string">"blob"</span>
+
+      source = arrayToHash(fileData.map cleanSourceFile)
+
+      pkg =
+        source: source
+        distribution: arrayToHash(results)
+
+      postProcessors.forEach (fn) -&gt;
+        fn(pkg)
+
+      <span class="keyword">return</span> pkg
+
+module.exports = Builder</code></pre>
+</div>
+</li>
+<li id="section-14">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-14">&#182;</a>
+    </div>
+    <h2 id="cache">Cache</h2>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+</li>
+<li id="section-15">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-15">&#182;</a>
+    </div>
+    
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">compilerCache = {}
+
+<span class="function"><span class="title">cached</span></span> = (compileFn) -&gt;
+  (data) -&gt;
+    {path, sha, content} = data
+    <span class="keyword">if</span> sha
+      key = <span class="string">"<span class="subst">#{path}</span>:<span class="subst">#{sha}</span>"</span>
+      compilerCache[key] <span class="keyword">or</span> compilerCache[key] = compileFn(data)
+    <span class="keyword">else</span>
+      compileFn(data)</code></pre>
+</div>
+</li>
+<li id="section-16">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-16">&#182;</a>
+    </div>
+    <h2 id="helpers">Helpers</h2>
+
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+</li>
+<li id="section-17">
+  <div class="annotation">
+    <div class="pilwrap">
+      <a class="pilcrow" href="#section-17">&#182;</a>
+    </div>
+    
+  </div>
+  <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">cleanSourceFile</span></span> = ({path, content, mode, type}) -&gt;
+  {path, content, mode, type}
+
+<span class="function"><span class="title">arrayToHash</span></span> = (array) -&gt;
+  array.reduce (hash, file) -&gt;
+    hash[file.path] = file
+    hash
+  , {}
+
+<span class="function"><span class="title">extend</span></span> = (target, sources...) -&gt;
+  <span class="keyword">for</span> source <span class="keyword">in</span> sources
+    <span class="keyword">for</span> name <span class="keyword">of</span> source
+      target[name] = source[name]
+
+  <span class="keyword">return</span> target
+
+<span class="function"><span class="title">fileExtension</span></span> = (str) -&gt;
+  <span class="keyword">if</span> match = str.match(<span class="regexp">/\.([^\.]*)$/</span>, <span class="string">''</span>)
+    match[match.length - <span class="number">1</span>]
+  <span class="keyword">else</span>
+    <span class="string">''</span>
+
+<span class="function"><span class="title">withoutExtension</span></span> = (str) -&gt;
+  str.replace(<span class="regexp">/\.[^\.]*$/</span>,<span class="string">""</span>)</code></pre>
+</div>
+</li>
+    </ul>
+  </div>
+  <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script><script>
+  (function() {
+  var ErrorReporter, bindUpdates, createEditor, exec, findInteractiveElements, readShebang, runners;
+
+  createEditor = function(code, shebang, section) {
+    var annotationElement, contentElement, editorElement, exampleSection, runtimeElement;
+    exampleSection = $("<li>", {
+      "class": "example"
+    });
+    annotationElement = $("<div>", {
+      "class": "annotation"
+    });
+    editorElement = $("<textarea>", {
+      "class": "annotation",
+      text: code
+    });
+    contentElement = $("<div>", {
+      "class": "content"
+    });
+    runtimeElement = $("<div>", {
+      "class": "output"
+    });
+    contentElement.append(runtimeElement);
+    annotationElement.append(editorElement);
+    exampleSection.append(annotationElement);
+    exampleSection.append(contentElement);
+    section.after(exampleSection);
+    return bindUpdates(shebang, editorElement, runtimeElement);
+  };
+
+  bindUpdates = function(shebang, editorElement, runtimeElement) {
+    return editorElement.on("keyup", function() {
+      var e, report, source;
+      report = ErrorReporter(editorElement);
+      source = editorElement.val();
+      try {
+        runners[shebang]({
+          editorElement: editorElement,
+          source: source,
+          runtimeElement: runtimeElement
+        });
+        return report.clear();
+      } catch (_error) {
+        e = _error;
+        return report(e);
+      }
+    });
+  };
+
+  readShebang = function(source) {
+    var match;
+    if (match = source.match(/^\#\! (.*)\n/)) {
+      return match[1];
+    }
+  };
+
+  ErrorReporter = function(editor) {
+    var reporter;
+    reporter = function(error) {
+      var errorParagraph;
+      if (editor.next().is("p.error")) {
+        return editor.next().text(error);
+      } else {
+        errorParagraph = $("<p>", {
+          "class": "error",
+          text: error.toString()
+        });
+        return editor.after(errorParagraph);
+      }
+    };
+    reporter.clear = function() {
+      if (editor.next().is("p.error")) {
+        return editor.next().remove();
+      }
+    };
+    return reporter;
+  };
+
+  findInteractiveElements = function() {
+    return $("blockquote > pre > code").each(function() {
+      var blockQuoteElement, code, codeElement, sectionElement, shebang;
+      codeElement = $(this);
+      code = codeElement.text();
+      if (shebang = readShebang(code)) {
+        if (!runners[shebang]) {
+          return;
+        }
+        code = code.split("\n").slice(1).join("\n");
+        blockQuoteElement = codeElement.parent().parent();
+        sectionElement = blockQuoteElement.parent().parent();
+        blockQuoteElement.remove();
+        return createEditor(code, shebang, sectionElement);
+      }
+    });
+  };
+
+  runners = {};
+
+  (typeof window !== "undefined" && window !== null ? window : global).Interactive = {
+    register: function(name, runner) {
+      runners[name] = runner;
+      findInteractiveElements();
+      return $('#container').on('keyup', 'textarea', function() {
+        $(this).height(0);
+        return $(this).height(this.scrollHeight);
+      }).find('textarea').keyup();
+    }
+  };
+
+  exec = function(_arg) {
+    var code, editorElement, runtimeElement, source;
+    source = _arg.source, code = _arg.code, editorElement = _arg.editorElement, runtimeElement = _arg.runtimeElement;
+    runtimeElement.remove();
+    editorElement.replaceWith($("<pre>", {
+      text: source
+    }));
+    return setTimeout(function() {
+      return Function(code)();
+    }, 0);
+  };
+
+  $(function() {
+    Interactive.register("setup", function(params) {
+      params.code = CoffeeScript.compile(params.source);
+      return exec(params);
+    });
+    return Interactive.register("setup-js", function(params) {
+      params.code = params.source;
+      return exec(params);
+    });
+  });
+
+}).call(this);
+
+</script><script src="package.js"></script>
+</body>
+</html>
