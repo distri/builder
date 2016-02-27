@@ -25,10 +25,11 @@ build products.
 
 `compileTemplate` compiles a haml file into a Hamlet program.
 
-    compileTemplate = (source) ->
+    compileTemplate = (source, mode="haml") ->
       HamletCompiler.compile source,
         compiler: CoffeeScript
         runtime: "require(\"/#{hamletRuntimePath}\")"
+        mode: mode
 
 `compileHTML` compiles an HTML file into a function that returns a DOM node.
 
@@ -70,27 +71,29 @@ and properties for what type of content was built.
 
       result =
         switch extension
+          when "coffee"
+            code: compileCoffee(content, path)
+          when "cson"
+            code: stringData(CSON.parse(content))
+          when "css"
+            code: stringData(content)
+          when "haml", "hamlet"
+            code: compileTemplate(content, "haml")
+          when "html"
+            code: compileHTML(content)
+          when "jadelet"
+            code: compileTemplate(content, "jade")
           when "js"
             code: content
           when "json"
             code: stringData(JSON.parse(content))
-          when "cson"
-            code: stringData(CSON.parse(content))
-          when "coffee"
-            code: compileCoffee(content, path)
-          when "haml"
-            code: compileTemplate(content, name)
-          when "styl"
-            code: compileStyl(content)
-          when "css"
-            code: stringData(content)
-          when "html"
-            code: compileHTML(content)
           when "md"
             # Separate out code and call compile again
             compileFile
               path: name
               content: stripMarkdown(content)
+          when "styl"
+            code: compileStyl(content)
           else
             {}
 
@@ -127,9 +130,9 @@ TODO: Standardize interface to use promises or pipes.
           Q.fcall ->
             throw (errors.map (e) -> e.error).join("\n")
         else
-          # Add the HamlJr runtime if any templates were compiled
+          # Add the Hamlet runtime if any hamlet or jadelet templates were compiled
           hasHaml = fileData.some ({path}) ->
-            path.match /.*\.haml(\..*)?$/
+            path.match(/.*\.haml(\..*)?$/) or path.match(/.*\.jadelet(\..*)?$/)
 
           if hasHaml
             libExists = data.some ({name}) ->
