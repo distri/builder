@@ -9,7 +9,7 @@ build products.
 
     hamletRuntimePath = "lib/hamlet-runtime"
 
-    styl = require "styl"
+    styl = require "./lib/stylus.min"
 
 `stripMarkdown` converts a literate file into pure code for compilation or execution.
 
@@ -51,7 +51,7 @@ CSS or other textually based data.
 export.
 
     compileStyl = (source) ->
-      styleContent = styl(source, whitespace: true).toString()
+      styleContent = styl(source).render()
 
       stringData(styleContent)
 

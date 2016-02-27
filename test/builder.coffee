@@ -16,9 +16,7 @@ describe "Builder", ->
       assert result.distribution["samples/jadelet"].content.match(/module\.exports =/)
 
       done()
-    .fail (e) ->
-      throw e
-    .done()
+    .catch done
 
   it "should build haml", (done) ->
     builder = Builder()
@@ -42,7 +40,9 @@ describe "Builder", ->
     ]
 
     builder.build(fileData).then (result) ->
-      assert result.distribution["samples/styl"].content
+      css = result.distribution["samples/styl"].content
+      console.log css
+      assert css
       done()
     .catch done
 
