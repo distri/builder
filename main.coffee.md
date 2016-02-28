@@ -7,11 +7,9 @@ build products.
     CSON = require "cson"
     HamletCompiler = require "./lib/hamlet-compiler"
 
-    Q = require "q"
-
     hamletRuntimePath = "lib/hamlet-runtime"
 
-    styl = require "styl"
+    stylus = require "./lib/stylus.min"
 
 `stripMarkdown` converts a literate file into pure code for compilation or execution.
 
@@ -53,7 +51,7 @@ CSS or other textually based data.
 export.
 
     compileStyl = (source) ->
-      styleContent = styl(source, whitespace: true).toString()
+      styleContent = stylus(source).render()
 
       stringData(styleContent)
 
@@ -127,8 +125,7 @@ TODO: Standardize interface to use promises or pipes.
         data = results.filter (result) -> !result.error
 
         if errors.length
-          Q.fcall ->
-            throw (errors.map (e) -> e.error).join("\n")
+          Promise.reject (errors.map (e) -> e.error).join("\n")
         else
           # Add the Hamlet runtime if any hamlet or jadelet templates were compiled
           hasHaml = fileData.some ({path}) ->
@@ -143,7 +140,7 @@ TODO: Standardize interface to use promises or pipes.
                 name: hamletRuntimePath
                 code: PACKAGE.distribution["lib/hamlet-runtime"].content # Kinda gross
 
-          Q.fcall -> data
+          Promise.resolve data
 
 Post processors operate on the built package.
 

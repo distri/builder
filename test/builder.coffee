@@ -16,9 +16,7 @@ describe "Builder", ->
       assert result.distribution["samples/jadelet"].content.match(/module\.exports =/)
 
       done()
-    .fail (e) ->
-      throw e
-    .done()
+    .catch done
 
   it "should build haml", (done) ->
     builder = Builder()
@@ -32,9 +30,7 @@ describe "Builder", ->
       assert result.distribution["samples/haml"].content.match(/module\.exports =/)
 
       done()
-    .fail (e) ->
-      throw e
-    .done()
+    .catch done
 
   it "should build styl", (done) ->
     builder = Builder()
@@ -44,11 +40,11 @@ describe "Builder", ->
     ]
 
     builder.build(fileData).then (result) ->
-      assert result.distribution["samples/styl"].content
+      css = result.distribution["samples/styl"].content
+      console.log css
+      assert css
       done()
-    .fail (e) ->
-      throw e
-    .done()
+    .catch done
 
   it "should build HTML", (done) ->
     fileData = [{
@@ -73,9 +69,7 @@ describe "Builder", ->
       assert node.childElementCount is 2
       assert node.className is "main"
       done()
-    , (errors) ->
-      throw errors[0]
-    .done()
+    .catch done
 
   it "should provide a working Hamlet runtime", ->
     assert typeof require("/lib/hamlet-runtime") is 'function'
