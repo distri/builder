@@ -223,7 +223,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.5.2-pre.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n",
+      "content": "version: \"0.5.2\"\nentryPoint: \"main\"\nremoteDependencies: [\n  \"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"\n]\ndependencies:\n  cson: \"distri/cson:v0.1.0\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -275,7 +275,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.5.2-pre.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\"}};",
+      "content": "module.exports = {\"version\":\"0.5.2\",\"entryPoint\":\"main\",\"remoteDependencies\":[\"https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js\"],\"dependencies\":{\"cson\":\"distri/cson:v0.1.0\"}};",
       "type": "blob"
     },
     "samples/haml": {
@@ -307,7 +307,7 @@
   "progenitor": {
     "url": "https://danielx.net/editor/"
   },
-  "version": "0.5.2-pre.0",
+  "version": "0.5.2",
   "entryPoint": "main",
   "remoteDependencies": [
     "https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"
