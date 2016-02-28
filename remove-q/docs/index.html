@@ -37,7 +37,7 @@ HamletCompiler = require <span class="string">"./lib/hamlet-compiler"</span>
 
 hamletRuntimePath = <span class="string">"lib/hamlet-runtime"</span>
 
-styl = require <span class="string">"./lib/stylus.min"</span></code></pre>
+stylus = require <span class="string">"./lib/stylus.min"</span></code></pre>
 </div>
 </li>
 <li id="section-3">
@@ -114,7 +114,7 @@ export.</p>
 
   </div>
   <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">compileStyl</span></span> = (source) -&gt;
-  styleContent = styl(source).render()
+  styleContent = stylus(source).render()
 
   stringData(styleContent)</code></pre>
 </div>
