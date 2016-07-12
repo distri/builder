@@ -1,4 +1,4 @@
-version: "0.5.2"
+version: "0.5.3-pre.0"
 entryPoint: "main"
 remoteDependencies: [
   "https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"
